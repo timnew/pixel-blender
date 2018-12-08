@@ -38,6 +38,8 @@ Blending pixels...
 Saving file output.png...
 ```
 
+![Output file][output]
+
 ## Limitation
 
 The script will turn the image into black & white, as it is to guaranteed the blended image on black and white background.
@@ -60,3 +62,4 @@ The interleave the 2 images into one by picking the pixel from one or another
 
 [original]: https://github.com/timnew/pixel-blender/raw/master/original.PNG
 [original-black]: https://github.com/timnew/pixel-blender/raw/master/original-blackbg.png
+[output]: https://github.com/timnew/pixel-blender/raw/master/output.png
