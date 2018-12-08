@@ -38,7 +38,11 @@ Blending pixels...
 Saving file output.png...
 ```
 
-![Output file][output]
+Output file:
+![output.png][output]
+
+Output file on black backgound
+![output.png on black background][output-black]
 
 ## Limitation
 
@@ -63,3 +67,4 @@ The interleave the 2 images into one by picking the pixel from one or another
 [original]: https://github.com/timnew/pixel-blender/raw/master/original.PNG
 [original-black]: https://github.com/timnew/pixel-blender/raw/master/original-blackbg.png
 [output]: https://github.com/timnew/pixel-blender/raw/master/output.png
+[output-black]: https://github.com/timnew/pixel-blender/raw/master/output-blackbg.png
