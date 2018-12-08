@@ -1,29 +1,57 @@
 #!/usr/bin/env ruby
 
 require 'rubygems'
-require 'commander'
+require 'commander/import'
 
-class Blender
-  include Commander::Methods
+require './lib/blender'
 
-  def run
-    program :name, 'blend'
-    program :version, '0.0.1'
-    program :description, 'Blend image'
+program :name, 'blend'
+program :version, '0.0.1'
+program :description, 'Blend image'
 
-    command :blend do |c|
-      c.syntax = 'blend blend [options]'
-      c.summary = ''
-      c.description = ''
-      c.example 'description', 'command example'
-      c.option '--some-switch', 'Some switch that does something'
-      c.action do |args, options|
-        # Do something or c.when_called Blend::Commands::Blend
-      end
+command :blend do |c|
+  c.syntax = 'blend blend [options]'
+  c.summary = ''
+  c.description = ''
+  c.example 'description', 'command example'
+  c.option '-t', '--thumbnail FILENAME', String, 'The image visible for thumbnail'
+  c.option '-f', '--fullscreen FILENAME', String, 'The image visible in fullscreen'
+  c.option '-o', '--output OUTPUT', String, 'The outputfile name'
+  c.action do |args, options|
+    options.default output: 'output.png'
+
+    if options.thumbnail.nil?
+      puts 'Thumbnail file is not given'
+      exit(1)
     end
 
-    run!
+    if options.fullscreen.nil?
+      puts 'Fullscreen file is not given'
+      exit(1)
+    end
+
+    puts " Thumbnail Image: #{options.thumbnail}"
+    puts "Fullscreen Image: #{options.fullscreen}"
+    puts "    Output Image: #{options.output}"
+
+    puts  "Loading #{options.thumbnail}...."
+    thumbnail = ChunkyPNG::Image.from_file(options.thumbnail)
+    puts "Loaded: #{thumbnail.dimension}"
+
+    puts  "Loading #{options.fullscreen}...."
+    fullscreen = ChunkyPNG::Image.from_file(options.fullscreen)
+    puts "Loaded: #{fullscreen.dimension}"
+
+    puts 'Preparing canvas...'
+    output = ChunkyPNG::Image.new(thumbnail.width, thumbnail.height, ChunkyPNG::Color::TRANSPARENT)
+    puts "Canvase: #{output.dimension}"
+
+    puts 'Blending pixels...'
+    output.blend!(thumbnail, fullscreen)
+
+    puts "Saving file #{options.output}..."
+    output.save(options.output, interlace: true)
   end
 end
 
-Blender.new.run if $PROGRAM_NAME == __FILE__
+default_command :blend
